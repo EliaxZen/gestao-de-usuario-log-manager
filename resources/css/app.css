@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Estilizando a barra de rolagem (opcional) */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #457B9D;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1D3557;
+}
