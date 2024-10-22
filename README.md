@@ -1,61 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Sistema de Gestão de Usuários - Log Manager
 
-## About Laravel
+## Descrição
+Este é um sistema de gestão de usuários desenvolvido em Laravel para uso interno em empresas. Ele oferece um CRUD de usuários e um dashboard administrativo completo para criação, edição, exclusão e redefinição de senhas. Apenas o administrador tem permissão para gerenciar usuários; vendedores e transportadoras têm permissões limitadas.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Funcionalidades
+- CRUD completo de usuários
+- Funções diferenciadas (`administrador`, `vendedor`, `transportadora`)
+- Painel administrativo exclusivo para criação e gerenciamento de usuários
+- Sistema de login e autenticação com Laravel Breeze
+- Controle de permissões: apenas o administrador pode registrar usuários
+- Vendedores e transportadoras visualizam uma tela de boas-vindas após o login
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tecnologias Utilizadas
+- **Laravel 8+**: Framework PHP
+- **Laravel Breeze**: Sistema de autenticação pronto
+- **Tailwind CSS**: Framework CSS para estilização
+- **MySQL**: Banco de dados
+- **Node.js/NPM**: Para gerenciamento de dependências e build front-end
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Requisitos
+- PHP 8.5.22
+- Composer
+- MySQL
+- Node.js e NPM
 
-## Learning Laravel
+## Instalação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/EliaxZen/gestao-de-usuario-log-manager.git
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Instale as dependências do Laravel:
+   ```bash
+   composer install
+   ```
 
-## Laravel Sponsors
+3. Instale as dependências do front-end:
+   ```bash
+   npm install
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+4. Crie o arquivo `.env`:
+   ```bash
+   cp .env.example .env
+   ```
 
-### Premium Partners
+5. Configure as credenciais do banco de dados no arquivo `.env`.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+6. Gere a chave da aplicação:
+   ```bash
+   php artisan key:generate
+   ```
 
-## Contributing
+7. Execute as migrações para criar as tabelas do banco de dados:
+   ```bash
+   php artisan migrate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+8. Rode a **seed** para criar o usuário administrador padrão:
+   ```bash
+   php artisan db:seed --class=UserSeeder
+   ```
 
-## Code of Conduct
+   Isso criará um usuário administrador com o e-mail `admin@gmail.com` e a senha `password`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+9. Inicie o servidor local:
+   ```bash
+   php artisan serve
+   ```
 
-## Security Vulnerabilities
+10. Para monitorar mudanças em arquivos front-end, execute:
+    ```bash
+    npm run watch
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Estrutura do Banco de Dados
+A tabela `users` inclui os seguintes campos:
+- **name**: Nome do usuário
+- **email**: E-mail único
+- **telefone**: Número de telefone (opcional)
+- **password**: Senha
+- **tipo**: Define o tipo de usuário (`administrador`, `vendedor`, `transportadora`)
+- **sexo**: Gênero do usuário (`Masculino`, `Feminino`)
 
-## License
+## Uso
+1. **Administrador**: Pode criar, editar e excluir usuários, além de redefinir senhas.
+2. **Vendedores e Transportadoras**: Após o login, visualizam uma tela de boas-vindas, sem acesso ao gerenciamento de outros usuários.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Contribuição
+Sinta-se à vontade para abrir issues ou enviar pull requests com melhorias ou correções.
+
