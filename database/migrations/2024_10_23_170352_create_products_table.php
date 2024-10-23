@@ -1,9 +1,10 @@
 <?php
 
+use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateProductsTable extends Migration
 {
@@ -19,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('nome_produto');
             $table->decimal('preco_produto', 10, 2);
             $table->integer('quantidade_produto');
-            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Order::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

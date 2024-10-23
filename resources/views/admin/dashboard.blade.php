@@ -50,7 +50,7 @@
                     </div>
 
                     <table id="usersTable" class="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
-                        <thead class="bg-[#1D3557] text-white text-sm leading-normal">
+                        <thead class="bg-[#1D3557] text-white text-sm leading-normal text-center">
                             <tr>
                                 <th scope="col" class="px-4 py-3">ID</th>
                                 <th scope="col" class="px-4 py-3">Nome</th>
@@ -60,7 +60,7 @@
                                 <th scope="col" class="px-4 py-3">Ações</th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-600 text-sm font-light">
+                        <tbody class="text-gray-600 text-sm font-light text-center">
                             @foreach ($users as $user)
                                 <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-150">
                                     <td class="px-4 py-3 border-b">{{ $user->id }}</td>
@@ -174,7 +174,6 @@
                     }
                 });
             });
-
         });
     </script>
 </x-app-layout>
