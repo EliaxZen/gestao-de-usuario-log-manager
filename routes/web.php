@@ -8,6 +8,27 @@ use App\Http\Controllers\TransportadoraController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+
+// Rotas para Pedidos (Orders)
+Route::get('orders', [OrderController::class, 'index'])->name('orders.index'); // Listar pedidos
+Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create'); // Exibir formulário de criação
+Route::post('orders', [OrderController::class, 'store'])->name('orders.store'); // Armazenar novo pedido
+Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show'); // Exibir detalhes de um pedido específico
+Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit'); // Exibir formulário de edição
+Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update'); // Atualizar pedido
+Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Excluir pedido
+
+// Rotas para Produtos (Products)
+Route::get('products', [ProductController::class, 'index'])->name('products.index'); // Listar produtos
+Route::get('products/create', [ProductController::class, 'create'])->name('products.create'); // Exibir formulário de criação
+Route::post('products', [ProductController::class, 'store'])->name('products.store'); // Armazenar novo produto
+Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show'); // Exibir detalhes de um produto específico
+Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit'); // Exibir formulário de edição
+Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update'); // Atualizar produto
+Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy'); // Excluir produto
+
 
 
 // Rota para logout

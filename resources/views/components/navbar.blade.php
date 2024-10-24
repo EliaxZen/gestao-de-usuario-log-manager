@@ -41,6 +41,17 @@
                         </svg>
                         Cadastrar Usuário
                     </a>
+                    <a href="{{ route('orders.index') }}"
+                        class="flex items-center text-white hover:bg-[#457B9D] px-3 py-2 rounded-md text-base font-medium transition duration-300">
+                        <!-- Admin Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-plus">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Criar Pedido
+                    </a>
                 </li>
             @elseif (Auth::user()->tipo === 'vendedor')
                 <li>
@@ -55,6 +66,17 @@
                             <line x1="9" y1="21" x2="9" y2="9"></line>
                         </svg>
                         Dashboard
+                    </a>
+                    <a href="{{ route('orders.index') }}"
+                        class="flex items-center text-white hover:bg-[#457B9D] px-3 py-2 rounded-md text-base font-medium transition duration-300">
+                        <!-- Admin Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-plus">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Criar Pedido
                     </a>
                 </li>
             @elseif (Auth::user()->tipo === 'transportadora')
