@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+
+    public function getOrderDetails($id)
+    {
+        // Busca o pedido e suas informações relacionadas
+        $order = Order::with('products')->findOrFail($id);
+
+        return response()->json($order);
+    }
+    
     public function index()
     {
         $orders = Order::with('products')->get();

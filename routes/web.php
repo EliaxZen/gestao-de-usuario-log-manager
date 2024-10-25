@@ -19,6 +19,8 @@ Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.sho
 Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit'); // Exibir formulário de edição
 Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update'); // Atualizar pedido
 Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Excluir pedido
+Route::get('/orders/{id}/details', [OrderController::class, 'getOrderDetails']);
+
 
 // Rota para logout
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

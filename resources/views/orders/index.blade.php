@@ -54,6 +54,9 @@
                                 <th scope="col" class="px-4 py-3">ID</th>
                                 <th scope="col" class="px-4 py-3">Nome Recebedor</th>
                                 <th scope="col" class="px-4 py-3">CEP</th>
+                                <th scope="col" class="px-4 py-3">Endereço</th>
+                                <th scope="col" class="px-4 py-3">Número</th>
+                                <th scope="col" class="px-4 py-3">Bairro</th>
                                 <th scope="col" class="px-4 py-3">Cidade</th>
                                 <th scope="col" class="px-4 py-3">Estado</th>
                                 <th scope="col" class="px-4 py-3">Ações</th>
@@ -65,6 +68,9 @@
                                     <td class="px-4 py-3 border-b">{{ $order->id }}</td>
                                     <td class="px-4 py-3 border-b">{{ $order->nome_recebedor }}</td>
                                     <td class="px-4 py-3 border-b">{{ $order->cep }}</td>
+                                    <td class="px-4 py-3 border-b">{{ $order->endereco }}</td>
+                                    <td class="px-4 py-3 border-b">{{ $order->numero }}</td>
+                                    <td class="px-4 py-3 border-b">{{ $order->bairro }}</td>
                                     <td class="px-4 py-3 border-b">{{ $order->cidade }}</td>
                                     <td class="px-4 py-3 border-b">{{ $order->estado }}</td>
                                     <td class="px-4 py-3 border-b text-center flex space-x-2 justify-center">
@@ -72,14 +78,9 @@
                                             class="edit-button flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition duration-200">
                                             Editar
                                         </a>
-                                        <button type="button" data-id="{{ $order->id }}"
-                                            data-nome="{{ $order->nome_recebedor }}" data-cep="{{ $order->cep }}"
-                                            data-endereco="{{ $order->endereco }}" data-numero="{{ $order->numero }}"
-                                            data-bairro="{{ $order->bairro }}" data-cidade="{{ $order->cidade }}"
-                                            data-estado="{{ $order->estado }}"
-                                            data-complemento="{{ $order->complemento }}"
-                                            data-produtos="{{ json_encode($order->produtos) }}"
-                                            class="details-button flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-500 transition duration-200">
+                                        <button
+                                            class="details-button flex items-center px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-400 transition duration-200"
+                                            data-order-id="{{ $order->id }}">
                                             Detalhes
                                         </button>
                                         <form action="{{ route('orders.destroy', $order) }}" method="POST"
@@ -99,38 +100,12 @@
         </div>
     </div>
 
-    <!-- Modal Detalhes -->
-    <div id="detailsModal" class="flex fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white w-11/12 lg:w-1/2 rounded-lg shadow-lg overflow-hidden">
-            <div class="px-6 py-4 flex justify-between items-center bg-blue-600 text-white">
-                <h3 class="text-lg font-semibold">Detalhes do Pedido</h3>
-                <button id="closeModal" class="text-white text-xl">&times;</button>
-            </div>
-            <div class="px-6 py-4 max-h-96 overflow-y-auto">
-                <!-- Informações do Pedido -->
-                <div class="mb-4">
-                    <h4 class="font-semibold text-lg">Informações do Pedido</h4>
-                    <p><strong>ID:</strong> <span id="modalOrderId"></span></p>
-                    <p><strong>Nome Recebedor:</strong> <span id="modalNomeRecebedor"></span></p>
-                    <p><strong>CEP:</strong> <span id="modalCep"></span></p>
-                    <p><strong>Endereço:</strong> <span id="modalEndereco"></span>, <strong>Número:</strong> <span
-                            id="modalNumero"></span></p>
-                    <p><strong>Bairro:</strong> <span id="modalBairro"></span></p>
-                    <p><strong>Cidade:</strong> <span id="modalCidade"></span></p>
-                    <p><strong>Estado:</strong> <span id="modalEstado"></span></p>
-                    <p><strong>Complemento:</strong> <span id="modalComplemento"></span></p>
-                </div>
-                <!-- Produtos -->
-                <div class="mb-4">
-                    <h4 class="font-semibold text-lg">Produtos</h4>
-                    <div id="modalProdutos" class="space-y-2">
-                        <!-- Produtos serão inseridos dinamicamente -->
-                    </div>
-                </div>
-            </div>
-            <div class="px-6 py-4 bg-gray-100 text-right">
-                <button id="closeModalFooter" class="px-4 py-2 bg-blue-600 text-white rounded-md">Fechar</button>
-            </div>
+    <!-- Modal -->
+    <div id="detailsModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2">
+            <h2 class="text-2xl font-bold mb-4">Detalhes do Pedido</h2>
+            <div id="modalContent"></div>
+            <button id="closeModal" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md">Fechar</button>
         </div>
     </div>
 
@@ -169,42 +144,38 @@
                 table.page.len(this.value).draw();
             });
 
-            // Abrir o Modal Detalhes
             $(document).on('click', '.details-button', function() {
-                const orderData = $(this).data();
-                $('#modalOrderId').text(orderData.id);
-                $('#modalNomeRecebedor').text(orderData.nome);
-                $('#modalCep').text(orderData.cep);
-                $('#modalEndereco').text(orderData.endereco);
-                $('#modalNumero').text(orderData.numero);
-                $('#modalBairro').text(orderData.bairro);
-                $('#modalCidade').text(orderData.cidade);
-                $('#modalEstado').text(orderData.estado);
-                $('#modalComplemento').text(orderData.complemento);
+                const orderId = $(this).data('order-id');
 
-                $('#modalProdutos').empty();
-                try {
-                    let produtosArray = orderData.produtos ? JSON.parse(orderData.produtos) : [];
-                    if (produtosArray.length === 0) {
-                        $('#modalProdutos').append('<p>Nenhum produto associado a este pedido.</p>');
-                    } else {
-                        produtosArray.forEach(produto => {
-                            $('#modalProdutos').append(
-                                `<p><strong>Produto:</strong> ${produto.nome_produto}, 
-                                  <strong>Preço:</strong> ${produto.preco_produto}, 
-                                  <strong>Quantidade:</strong> ${produto.quantidade_produto}</p>`
-                            );
+                // Fazendo a requisição AJAX para obter os detalhes do pedido
+                $.ajax({
+                    url: `/orders/${orderId}/details`,
+                    method: 'GET',
+                    success: function(order) {
+                        // Monta a string com os detalhes do pedido e dos produtos
+                        let orderDetails = `<strong>ID:</strong> ${order.id}<br>
+                                            <strong>Nome Recebedor:</strong> ${order.nome_recebedor}<br>
+                                            <strong>CEP:</strong> ${order.cep}<br>
+                                            <strong>Cidade:</strong> ${order.cidade}<br>
+                                            <strong>Estado:</strong> ${order.estado}<br>
+                                            <strong>Produtos:</strong><br>`;
+                        
+                        order.products.forEach(function(product) {
+                            orderDetails += `- ${product.nome_produto} (Quantidade: ${product.quantidade_produto}, Preço: ${product.preco_produto})<br>`;
                         });
-                    }
-                } catch (e) {
-                    console.error("Erro ao processar produtos: ", e);
-                }
 
-                $('#detailsModal').removeClass('hidden');
+                        // Preenche o conteúdo do modal
+                        $('#modalContent').html(orderDetails);
+                        $('#detailsModal').removeClass('hidden');
+                    },
+                    error: function() {
+                        alert('Erro ao buscar os detalhes do pedido.');
+                    }
+                });
             });
 
-            // Fechar o modal
-            $('#closeModal, #closeModalFooter').on('click', function() {
+            // Fecha o modal
+            $('#closeModal').on('click', function() {
                 $('#detailsModal').addClass('hidden');
             });
 
