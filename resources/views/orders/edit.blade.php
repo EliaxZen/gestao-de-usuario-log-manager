@@ -103,72 +103,64 @@
                         <!-- Produtos -->
                         <h3 class="text-lg font-semibold mt-6 mb-4">Editar Produtos</h3>
 
-                        <!-- Lista de produtos existentes -->
                         <div id="product-list">
-                            @foreach ($order->produtos as $produto)
-                                <div class="mb-4">
+                            <!-- Produtos Existentes -->
+                            @foreach ($order->products as $product)
+                                <div class="mb-4 product-item">
+                                    <input type="hidden" name="products[{{ $product->id }}][id]"
+                                        value="{{ $product->id }}">
                                     <div class="flex space-x-4">
-                                        <!-- Nome do Produto -->
                                         <div class="flex-grow">
-                                            <label for="produtos[{{ $produto->id }}][nome_produto]" class="block text-gray-700">Nome Produto:</label>
-                                            <input type="text" name="produtos[{{ $produto->id }}][nome_produto]"
-                                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                                value="{{ old('produtos[' . $produto->id . '][nome_produto]', $produto->nome_produto) }}" required>
+                                            <label class="block text-gray-700">Nome Produto:</label>
+                                            <input type="text" name="products[{{ $product->id }}][nome_produto]"
+                                                value="{{ old('products.' . $product->id . '.nome_produto', $product->nome_produto) }}"
+                                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                         </div>
-
-                                        <!-- Preço do Produto -->
                                         <div>
-                                            <label for="produtos[{{ $produto->id }}][preco_produto]" class="block text-gray-700">Preço:</label>
-                                            <input type="number" name="produtos[{{ $produto->id }}][preco_produto]" step="0.01"
-                                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                                value="{{ old('produtos[' . $produto->id . '][preco_produto]', $produto->preco_produto) }}" required>
+                                            <label class="block text-gray-700">Preço:</label>
+                                            <input type="number" name="products[{{ $product->id }}][preco_produto]"
+                                                step="0.01"
+                                                value="{{ old('products.' . $product->id . '.preco_produto', $product->preco_produto) }}"
+                                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                         </div>
-
-                                        <!-- Quantidade do Produto -->
                                         <div>
-                                            <label for="produtos[{{ $produto->id }}][quantidade_produto]" class="block text-gray-700">Quantidade:</label>
-                                            <input type="number" name="produtos[{{ $produto->id }}][quantidade_produto]"
+                                            <label class="block text-gray-700">Quantidade:</label>
+                                            <input type="number"
+                                                name="products[{{ $product->id }}][quantidade_produto]"
+                                                value="{{ old('products.' . $product->id . '.quantidade_produto', $product->quantidade_produto) }}"
                                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                                value="{{ old('produtos[' . $produto->id . '][quantidade_produto]', $produto->quantidade_produto) }}" required>
+                                                required>
                                         </div>
-
-                                        <!-- Botão remover produto -->
-                                        <button type="button" class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
+                                        <button type="button"
+                                            class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
-                        <!-- Produto template para adicionar novos produtos -->
-                        <div id="product-template" class="mb-4 hidden">
-                            <div class="flex space-x-4">
-                                <!-- Nome do Produto -->
+                        <!-- Produto template para novos produtos -->
+                        <template id="product-template">
+                            <div class="mb-4 flex space-x-4 product-item">
                                 <div class="flex-grow">
-                                    <label for="nome_produto" class="block text-gray-700">Nome Produto:</label>
-                                    <input type="text" name="produtos[][nome_produto]"
+                                    <label class="block text-gray-700">Nome Produto:</label>
+                                    <input type="text" name="products[][nome_produto]"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
-
-                                <!-- Preço do Produto -->
                                 <div>
-                                    <label for="preco_produto" class="block text-gray-700">Preço:</label>
-                                    <input type="number" name="produtos[][preco_produto]" step="0.01"
+                                    <label class="block text-gray-700">Preço:</label>
+                                    <input type="number" name="products[][preco_produto]" step="0.01"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
-
-                                <!-- Quantidade do Produto -->
                                 <div>
-                                    <label for="quantidade_produto" class="block text-gray-700">Quantidade:</label>
-                                    <input type="number" name="produtos[][quantidade_produto]"
+                                    <label class="block text-gray-700">Quantidade:</label>
+                                    <input type="number" name="products[][quantidade_produto]"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
-
-                                <!-- Botão remover produto -->
-                                <button type="button" class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
+                                <button type="button"
+                                    class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
                             </div>
-                        </div>
+                        </template>
 
-                        <!-- Botão adicionar novo produto -->
                         <div>
                             <button type="button" id="add-product-btn"
                                 class="px-4 py-2 bg-green-600 text-white rounded-md mt-4">Adicionar Produto</button>
@@ -187,14 +179,32 @@
 
     <!-- Script para adicionar/remover produtos dinamicamente -->
     <script>
-        document.getElementById('add-product-btn').addEventListener('click', function () {
-            const template = document.getElementById('product-template').cloneNode(true);
-            template.classList.remove('hidden');
-            document.getElementById('product-list').appendChild(template);
+        document.addEventListener("DOMContentLoaded", function() {
+            const addProductButton = document.getElementById('add-product-btn');
+            const productTemplate = document.getElementById('product-template').content;
+            const productList = document.getElementById('product-list');
 
-            // Adiciona evento para remover o produto
-            template.querySelector('.remove-product-btn').addEventListener('click', function () {
-                template.remove();
+            // Adiciona um novo produto ao formulário
+            addProductButton.addEventListener('click', function() {
+                const newProduct = document.importNode(productTemplate, true);
+                // Atualiza os atributos "name" para cada novo produto
+                const index = productList.children.length;
+
+                newProduct.querySelector('[name="products[][nome_produto]"]').setAttribute('name',
+                    `products[${index}][nome_produto]`);
+                newProduct.querySelector('[name="products[][preco_produto]"]').setAttribute('name',
+                    `products[${index}][preco_produto]`);
+                newProduct.querySelector('[name="products[][quantidade_produto]"]').setAttribute('name',
+                    `products[${index}][quantidade_produto]`);
+
+                productList.appendChild(newProduct);
+            });
+
+            // Remove um produto do formulário
+            productList.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-product-btn')) {
+                    event.target.closest('.product-item').remove();
+                }
             });
         });
     </script>

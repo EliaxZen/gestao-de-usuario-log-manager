@@ -27,7 +27,7 @@
 
                 <!-- Tabela Responsiva -->
                 <div class="mb-4">
-                    <!-- Custom search bar -->
+                    <!-- Barra de pesquisa personalizada -->
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex space-x-2">
                             <label for="customLength" class="text-gray-600">Mostrar</label>
@@ -159,56 +159,47 @@
                 dom: 'rtip',
             });
 
-            // Custom search
+            // Pesquisa personalizada
             $('#customSearch').on('keyup', function() {
                 table.search(this.value).draw();
             });
 
-            // Custom length change
+            // Alteração de página personalizada
             $('#customLength').on('change', function() {
                 table.page.len(this.value).draw();
             });
 
             // Abrir o Modal Detalhes
             $(document).on('click', '.details-button', function() {
-                // Coletar os dados do botão clicado
-                const orderId = $(this).data('id');
-                const nomeRecebedor = $(this).data('nome');
-                const cep = $(this).data('cep');
-                const endereco = $(this).data('endereco');
-                const numero = $(this).data('numero');
-                const bairro = $(this).data('bairro');
-                const cidade = $(this).data('cidade');
-                const estado = $(this).data('estado');
-                const complemento = $(this).data('complemento');
-                const produtos = $(this).data('produtos');
+                const orderData = $(this).data();
+                $('#modalOrderId').text(orderData.id);
+                $('#modalNomeRecebedor').text(orderData.nome);
+                $('#modalCep').text(orderData.cep);
+                $('#modalEndereco').text(orderData.endereco);
+                $('#modalNumero').text(orderData.numero);
+                $('#modalBairro').text(orderData.bairro);
+                $('#modalCidade').text(orderData.cidade);
+                $('#modalEstado').text(orderData.estado);
+                $('#modalComplemento').text(orderData.complemento);
 
-                // Preencher o modal com os dados
-                $('#modalOrderId').text(orderId);
-                $('#modalNomeRecebedor').text(nomeRecebedor);
-                $('#modalCep').text(cep);
-                $('#modalEndereco').text(endereco);
-                $('#modalNumero').text(numero);
-                $('#modalBairro').text(bairro);
-                $('#modalCidade').text(cidade);
-                $('#modalEstado').text(estado);
-                $('#modalComplemento').text(complemento);
-
-                // Limpar e adicionar produtos
                 $('#modalProdutos').empty();
                 try {
-                    // Convertendo string JSON em objeto
-                    let produtosArray = JSON.parse(produtos);
-                    produtosArray.forEach(function(produto) {
-                        $('#modalProdutos').append(
-                            `<p><strong>Produto:</strong> ${produto.nome_produto}, <strong>Preço:</strong> ${produto.preco_produto}, <strong>Quantidade:</strong> ${produto.quantidade_produto}, <strong>Pedido ID:</strong> ${produto.order_id}</p>`
+                    let produtosArray = orderData.produtos ? JSON.parse(orderData.produtos) : [];
+                    if (produtosArray.length === 0) {
+                        $('#modalProdutos').append('<p>Nenhum produto associado a este pedido.</p>');
+                    } else {
+                        produtosArray.forEach(produto => {
+                            $('#modalProdutos').append(
+                                `<p><strong>Produto:</strong> ${produto.nome_produto}, 
+                                  <strong>Preço:</strong> ${produto.preco_produto}, 
+                                  <strong>Quantidade:</strong> ${produto.quantidade_produto}</p>`
                             );
-                    });
+                        });
+                    }
                 } catch (e) {
                     console.error("Erro ao processar produtos: ", e);
                 }
 
-                // Exibir o modal
                 $('#detailsModal').removeClass('hidden');
             });
 

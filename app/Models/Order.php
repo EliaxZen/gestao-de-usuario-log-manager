@@ -20,7 +20,7 @@ class Order extends Model
         'complemento',
     ];
 
-    public function products() 
+    public function products()
     {
         return $this->hasMany(Product::class);
     }

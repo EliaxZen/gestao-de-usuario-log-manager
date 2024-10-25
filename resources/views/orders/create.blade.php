@@ -102,39 +102,33 @@
                         <!-- Produtos -->
                         <h3 class="text-lg font-semibold mt-6 mb-4">Adicionar Produtos</h3>
 
-                        <!-- Lista de produtos (dinâmica) -->
-                        <div id="product-list"></div>
+                        <!-- Lista de produtos dinâmica -->
+                        <div id="product-list" class="space-y-4"></div>
 
-                        <!-- Produto template -->
-                        <div id="product-template" class="mb-4 hidden">
-                            <div class="flex space-x-4">
-                                <!-- Nome do Produto -->
+                        <!-- Produto template fora do formulário -->
+                        <template id="product-template">
+                            <div class="flex space-x-4 product-item">
                                 <div class="flex-grow">
-                                    <label for="nome_produto" class="block text-gray-700">Nome Produto:</label>
-                                    <input type="text" name="produtos[][nome_produto]"
+                                    <label class="block text-gray-700">Nome Produto:</label>
+                                    <input type="text" name="products[0][nome_produto]" 
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
-
-                                <!-- Preço do Produto -->
                                 <div>
-                                    <label for="preco_produto" class="block text-gray-700">Preço:</label>
-                                    <input type="number" name="produtos[][preco_produto]" step="0.01"
+                                    <label class="block text-gray-700">Preço:</label>
+                                    <input type="number" name="products[0][preco_produto]" step="0.01"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
-
-                                <!-- Quantidade do Produto -->
                                 <div>
-                                    <label for="quantidade_produto" class="block text-gray-700">Quantidade:</label>
-                                    <input type="number" name="produtos[][quantidade_produto]"
+                                    <label class="block text-gray-700">Quantidade:</label>
+                                    <input type="number" name="products[0][quantidade_produto]"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
-
-                                <!-- Botão remover -->
-                                <button type="button" class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
+                                <button type="button" 
+                                    class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
                             </div>
-                        </div>
+                        </template>
 
-                        <!-- Botão adicionar mais produtos -->
+                        <!-- Botão para adicionar produto -->
                         <div>
                             <button type="button" id="add-product-btn"
                                 class="px-4 py-2 bg-green-600 text-white rounded-md mt-4">Adicionar Produto</button>
@@ -151,17 +145,29 @@
         </div>
     </div>
 
-    <!-- Script para adicionar/remover produtos dinamicamente -->
+    <!-- Script para adicionar/remover produtos -->
     <script>
-        document.getElementById('add-product-btn').addEventListener('click', function () {
-            const template = document.getElementById('product-template').cloneNode(true);
-            template.classList.remove('hidden');
-            document.getElementById('product-list').appendChild(template);
+        let productIndex = 0;
 
-            // Adiciona evento para remover o produto
-            template.querySelector('.remove-product-btn').addEventListener('click', function () {
-                template.remove();
+        document.getElementById('add-product-btn').addEventListener('click', function() {
+            const productTemplate = document.getElementById('product-template').content.cloneNode(true);
+            
+            // Atualiza o índice de cada produto no template
+            productTemplate.querySelectorAll('input').forEach((input) => {
+                input.name = input.name.replace('[0]', `[${productIndex}]`);
             });
+
+            // Adiciona o template ao formulário
+            const productList = document.getElementById('product-list');
+            productList.appendChild(productTemplate);
+
+            // Remove produto individualmente
+            productList.lastElementChild.querySelector('.remove-product-btn').addEventListener('click', function() {
+                this.closest('.product-item').remove();
+            });
+
+            // Incrementa o índice
+            productIndex++;
         });
     </script>
 </x-app-layout>

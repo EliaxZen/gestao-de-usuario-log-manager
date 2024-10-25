@@ -16,15 +16,16 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('nome_recebedor');
-            $table->char('cep', 8);
+            $table->string('cep', 9);  // Ajuste o tamanho do CEP conforme necessário
             $table->string('endereco');
-            $table->string('numero');
+            $table->string('numero', 10);  // Limite para o número do endereço
             $table->string('bairro');
             $table->string('cidade');
-            $table->char('estado', 2);
+            $table->string('estado', 2);  // Estado em formato sigla, ex.: 'SP'
             $table->text('complemento')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**

@@ -20,17 +20,6 @@ Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('order
 Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update'); // Atualizar pedido
 Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Excluir pedido
 
-// Rotas para Produtos (Products)
-Route::get('products', [ProductController::class, 'index'])->name('products.index'); // Listar produtos
-Route::get('products/create', [ProductController::class, 'create'])->name('products.create'); // Exibir formulário de criação
-Route::post('products', [ProductController::class, 'store'])->name('products.store'); // Armazenar novo produto
-Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show'); // Exibir detalhes de um produto específico
-Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit'); // Exibir formulário de edição
-Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update'); // Atualizar produto
-Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy'); // Excluir produto
-
-
-
 // Rota para logout
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
