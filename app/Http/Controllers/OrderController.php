@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-
     public function getOrderDetails($id)
     {
         // Busca o pedido e suas informações relacionadas

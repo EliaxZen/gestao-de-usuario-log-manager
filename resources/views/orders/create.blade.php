@@ -17,7 +17,8 @@
                         <!-- Nome Recebedor -->
                         <div class="mb-4">
                             <label for="nome_recebedor" class="block text-gray-700">Nome Recebedor:</label>
-                            <input type="text" id="nome_recebedor" name="nome_recebedor"
+                            <input type="text" id="nome_recebedor" name="nome_recebedor" maxlength="100"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('nome_recebedor') border-red-500 @enderror"
                                 value="{{ old('nome_recebedor') }}" required>
                             @error('nome_recebedor')
@@ -28,7 +29,8 @@
                         <!-- Cep -->
                         <div class="mb-4">
                             <label for="cep" class="block text-gray-700">Cep:</label>
-                            <input type="text" id="cep" name="cep"
+                            <input type="text" id="cep" name="cep" maxlength="9"
+                                oninput="this.value = this.value.replace(/\D/g, '').replace(/(\d{5})(\d{3})/, '$1-$2').slice(0, 9)"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('cep') border-red-500 @enderror"
                                 value="{{ old('cep') }}" required>
                             @error('cep')
@@ -39,7 +41,8 @@
                         <!-- Endereço -->
                         <div class="mb-4">
                             <label for="endereco" class="block text-gray-700">Endereço:</label>
-                            <input type="text" id="endereco" name="endereco"
+                            <input type="text" id="endereco" name="endereco" maxlength="150"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s\.,-]/g, '')"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('endereco') border-red-500 @enderror"
                                 value="{{ old('endereco') }}" required>
                             @error('endereco')
@@ -50,7 +53,7 @@
                         <!-- Número -->
                         <div class="mb-4">
                             <label for="numero" class="block text-gray-700">Número:</label>
-                            <input type="number" id="numero" name="numero"
+                            <input type="number" id="numero" name="numero" min="1" max="9999"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('numero') border-red-500 @enderror"
                                 value="{{ old('numero') }}" required>
                             @error('numero')
@@ -61,7 +64,8 @@
                         <!-- Bairro -->
                         <div class="mb-4">
                             <label for="bairro" class="block text-gray-700">Bairro:</label>
-                            <input type="text" id="bairro" name="bairro"
+                            <input type="text" id="bairro" name="bairro" maxlength="100"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('bairro') border-red-500 @enderror"
                                 value="{{ old('bairro') }}" required>
                             @error('bairro')
@@ -72,7 +76,8 @@
                         <!-- Cidade -->
                         <div class="mb-4">
                             <label for="cidade" class="block text-gray-700">Cidade:</label>
-                            <input type="text" id="cidade" name="cidade"
+                            <input type="text" id="cidade" name="cidade" maxlength="100"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('cidade') border-red-500 @enderror"
                                 value="{{ old('cidade') }}" required>
                             @error('cidade')
@@ -83,7 +88,8 @@
                         <!-- Estado -->
                         <div class="mb-4">
                             <label for="estado" class="block text-gray-700">Estado:</label>
-                            <input type="text" id="estado" name="estado"
+                            <input type="text" id="estado" name="estado" maxlength="2"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase()"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('estado') border-red-500 @enderror"
                                 value="{{ old('estado') }}" required>
                             @error('estado')
@@ -94,7 +100,8 @@
                         <!-- Complemento -->
                         <div class="mb-4">
                             <label for="complemento" class="block text-gray-700">Complemento:</label>
-                            <input type="text" id="complemento" name="complemento"
+                            <input type="text" id="complemento" name="complemento" maxlength="50"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s\.,-]/g, '')"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
                                 value="{{ old('complemento') }}">
                         </div>
@@ -110,34 +117,33 @@
                             <div class="flex space-x-4 product-item">
                                 <div class="flex-grow">
                                     <label class="block text-gray-700">Nome Produto:</label>
-                                    <input type="text" name="products[0][nome_produto]" 
+                                    <input type="text" name="products[0][nome_produto]" maxlength="100"
+                                        oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '')"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
                                 <div>
                                     <label class="block text-gray-700">Preço:</label>
-                                    <input type="number" name="products[0][preco_produto]" step="0.01"
+                                    <input type="number" name="products[0][preco_produto]" step="0.01" min="0" max="99999.99"
+                                        oninput="if(this.value.includes('.')) this.value = parseFloat(this.value).toFixed(2);"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
                                 <div>
                                     <label class="block text-gray-700">Quantidade:</label>
-                                    <input type="number" name="products[0][quantidade_produto]"
+                                    <input type="number" name="products[0][quantidade_produto]" min="1" max="999"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                 </div>
-                                <button type="button" 
-                                    class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
+                                <button type="button" class="remove-product-btn px-2 py-1 bg-red-600 text-white rounded-md mt-7">Remover</button>
                             </div>
                         </template>
 
                         <!-- Botão para adicionar produto -->
                         <div>
-                            <button type="button" id="add-product-btn"
-                                class="px-4 py-2 bg-green-600 text-white rounded-md mt-4">Adicionar Produto</button>
+                            <button type="button" id="add-product-btn" class="px-4 py-2 bg-green-600 text-white rounded-md mt-4">Adicionar Produto</button>
                         </div>
 
                         <!-- Botão Criar Pedido -->
                         <div class="mt-6">
-                            <button type="submit" id="createOrderButton"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-md">Criar Pedido</button>
+                            <button type="submit" id="createOrderButton" class="px-4 py-2 bg-blue-600 text-white rounded-md">Criar Pedido</button>
                         </div>
                     </form>
                 </div>
