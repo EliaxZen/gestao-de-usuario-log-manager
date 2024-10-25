@@ -16,7 +16,7 @@
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Dashboard Pedidos</h2>
                 <div class="mb-6">
                     <a href="{{ route('orders.create') }}"
-                        class="inline-flex items-center px-4 py-2 bg-green-600 text-white font-bold rounded-md hover:bg-green-500 transition duration-200">
+                        class="inline-flex items-center px-5 py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-500 transition-all duration-300 transform hover:scale-105">
                         Criar Novo Pedido
                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24"
                             stroke="white">
