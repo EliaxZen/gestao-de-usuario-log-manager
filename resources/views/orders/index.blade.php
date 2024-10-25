@@ -101,11 +101,14 @@
     </div>
 
     <!-- Modal -->
-    <div id="detailsModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2">
-            <h2 class="text-2xl font-bold mb-4">Detalhes do Pedido</h2>
-            <div id="modalContent"></div>
-            <button id="closeModal" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md">Fechar</button>
+    <div id="detailsModal"
+        class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden transition-opacity duration-300 ease-in-out">
+        <div
+            class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2 transform transition-transform duration-300 scale-95">
+            <h2 class="text-2xl font-bold mb-4 text-[#1D3557]">Detalhes do Pedido</h2>
+            <div id="modalContent" class="text-gray-700 leading-relaxed"></div>
+            <button id="closeModal"
+                class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 transition duration-200">Fechar</button>
         </div>
     </div>
 
@@ -159,9 +162,10 @@
                                             <strong>Cidade:</strong> ${order.cidade}<br>
                                             <strong>Estado:</strong> ${order.estado}<br>
                                             <strong>Produtos:</strong><br>`;
-                        
+
                         order.products.forEach(function(product) {
-                            orderDetails += `- ${product.nome_produto} (Quantidade: ${product.quantidade_produto}, Preço: ${product.preco_produto})<br>`;
+                            orderDetails +=
+                                `- ${product.nome_produto} (Quantidade: ${product.quantidade_produto}, Preço: ${product.preco_produto})<br>`;
                         });
 
                         // Preenche o conteúdo do modal
