@@ -12,14 +12,16 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 
 // Rotas para Pedidos (Orders)
-Route::get('orders', [OrderController::class, 'index'])->name('orders.index'); // Listar pedidos
-Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create'); // Exibir formulário de criação
-Route::post('orders', [OrderController::class, 'store'])->name('orders.store'); // Armazenar novo pedido
-Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show'); // Exibir detalhes de um pedido específico
-Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit'); // Exibir formulário de edição
-Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update'); // Atualizar pedido
-Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Excluir pedido
-Route::get('/orders/{id}/details', [OrderController::class, 'getOrderDetails']);
+Route::middleware(['auth', 'admin_or_vendedor'])->group(function () {
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index'); // Listar pedidos
+    Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create'); // Exibir formulário de criação
+    Route::post('orders', [OrderController::class, 'store'])->name('orders.store'); // Armazenar novo pedido
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show'); // Exibir detalhes de um pedido específico
+    Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit'); // Exibir formulário de edição
+    Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update'); // Atualizar pedido
+    Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Excluir pedido
+    Route::get('/orders/{id}/details', [OrderController::class, 'getOrderDetails']);
+});
 
 
 // Rota para logout
