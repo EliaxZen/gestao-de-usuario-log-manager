@@ -40,11 +40,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy'); // Excluir usuário
 });
 
-// Rota para o painel do vendedor (apenas autenticados)
 Route::middleware(['auth'])->group(function () {
     Route::get('/vendedor/dashboard', [VendedorController::class, 'index'])->name('vendedor.dashboard');
     
-    // Rota para o painel da transportadora
     Route::get('/transportadora/dashboard', [TransportadoraController::class, 'index'])->name('transportadora.dashboard');
 });
 
